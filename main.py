@@ -1,11 +1,11 @@
 from fastapi import FastAPI, HTTPException
 
-from schemas import (
+from app.schemas import (
     Application,
     ApplicationCreate,
     ApplicationStatusUpdate,
 )
-import storage
+from app import storage
 
 app = FastAPI(title="BIG Invest API")
 
