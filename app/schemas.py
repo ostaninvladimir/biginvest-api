@@ -1,42 +1,19 @@
-from typing import Optional, List
 from pydantic import BaseModel
+from typing import List, Optional
 
 
-# -------------------------
-# Вложенные модели
-# -------------------------
-
-class Lot(BaseModel):
-    id: int
-    title: str
-    city: str
-    block: str
-    price: str
-    slug: str
-    tags: List[str]
-
-
-class Customer(BaseModel):
-    name: str
-    phone: str
-
-
-# -------------------------
-# Модели для запросов
-# -------------------------
-
+# -------- INPUT --------
 class ApplicationCreate(BaseModel):
     lotId: int
     lotTitle: str
     lotCity: str
     lotBlock: str
     lotPrice: str
-    lotSlug: str
+    lotSlug: Optional[str] = None
     lotTags: List[str] = []
 
     customerName: str
     customerPhone: str
-
     contactMethod: str
     timeSlot: str
     comment: Optional[str] = None
@@ -48,19 +25,29 @@ class ApplicationStatusUpdate(BaseModel):
     comment: Optional[str] = None
 
 
-# -------------------------
-# Модель ответа (как backend реально возвращает!)
-# -------------------------
+# -------- OUTPUT --------
+class Lot(BaseModel):
+    title: str
+    city: str
+    block: str
+    price: str
+    tags: List[str] = []
+
+
+class Customer(BaseModel):
+    name: str
+    phone: str
+
 
 class Application(BaseModel):
-    id: str
-    status: str
+    id: int
     createdAt: str
-    timeSlot: str
-    contactMethod: str
+    status: str
 
-    comment: Optional[str] = None
-    updatedBy: Optional[str] = None
-
-    customer: Customer
     lot: Lot
+    customer: Customer
+
+    contactMethod: str
+    timeSlot: str
+    comment: Optional[str] = None
+    managerId: Optional[str] = None
